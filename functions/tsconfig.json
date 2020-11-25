@@ -8,6 +8,7 @@
     "strict": true,
     "target": "es2017",
     "baseUrl": ".",
+    "esModuleInterop": true,
     "paths": {
       "@comparare/types/*": ["../types/*"]
     }
