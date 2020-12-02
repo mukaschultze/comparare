@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "236348242513",
+    "firebase_url": "https://comparare-77fc1.firebaseio.com",
+    "project_id": "comparare-77fc1",
+    "storage_bucket": "comparare-77fc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236348242513:android:0c1c6a8031812481459670",
+        "android_client_info": {
+          "package_name": "com.ps2.comparare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236348242513-sjai4bgufv4oetqvnr1c9177n3i901qh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApGeu1TX4jKtcgKs-fhtgnF-aoKqSplu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236348242513-sjai4bgufv4oetqvnr1c9177n3i901qh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
