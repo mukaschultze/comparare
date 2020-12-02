@@ -1,6 +1,7 @@
 import 'package:comparare_app/search/product.list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'product.list.dart';
 
@@ -64,7 +65,18 @@ class Body extends StatelessWidget {
   }
 }
 
-class ScanBox extends StatelessWidget {
+class ScanBox extends StatefulWidget {
+  @override
+  _ScanBoxState createState() => _ScanBoxState();
+}
+
+class _ScanBoxState extends State<ScanBox> {
+  String _data = "";
+
+  Future<String> _scan() async {
+    FlutterBarcodeScanner.scanBarcode("#ff0000", "Cancelar", false, ScanMode.BARCODE).then((value) => setState(()=> _data = value));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,7 +91,7 @@ class ScanBox extends StatelessWidget {
             ),
           ),
           RaisedButton(
-            onPressed: () {},
+            onPressed: ()=> _scan(),
             color: Colors.blue,
             textColor: Colors.white,
             child: Text(
@@ -88,7 +100,8 @@ class ScanBox extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-          )
+          ),
+          Text(_data),
         ],
       ),
     );
