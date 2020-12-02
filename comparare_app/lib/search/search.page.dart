@@ -1,5 +1,6 @@
 import 'package:comparare_app/search/product.list.dart';
 import 'package:comparare_app/search/query.page.dart';
+import 'package:comparare_app/search/sideDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -10,6 +11,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         // leading: Icon(Icons.menu),
         leading: FlatButton(
@@ -22,7 +24,9 @@ class SearchPage extends StatelessWidget {
         title: Text('Comparare'),
         actions: [],
       ),
-      body: Body(),
+      body: Body(
+      ),
+      drawer: SideDrawer(),
     );
   }
 }
@@ -49,6 +53,7 @@ class Body extends StatelessWidget {
     //   ],
     // ));
     return Container(
+      // color: Colors.white,
       width: MediaQuery.of(context).size.width,
       child: Wrap(
         runSpacing: 36,
