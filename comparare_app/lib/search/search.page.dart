@@ -1,4 +1,5 @@
 import 'package:comparare_app/search/product.list.dart';
+import 'package:comparare_app/search/query.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -71,10 +72,20 @@ class ScanBox extends StatefulWidget {
 }
 
 class _ScanBoxState extends State<ScanBox> {
-  String _data = "";
 
   Future<String> _scan() async {
-    FlutterBarcodeScanner.scanBarcode("#ff0000", "Cancelar", false, ScanMode.BARCODE).then((value) => setState(()=> _data = value));
+    FlutterBarcodeScanner.scanBarcode(
+            "#ff0000", "Digitar", true, ScanMode.BARCODE)
+        .then(
+      (value) => setState(
+        () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Query(value != "-1" ? value : ""),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -91,7 +102,7 @@ class _ScanBoxState extends State<ScanBox> {
             ),
           ),
           RaisedButton(
-            onPressed: ()=> _scan(),
+            onPressed: () => _scan(),
             color: Colors.blue,
             textColor: Colors.white,
             child: Text(
@@ -101,7 +112,6 @@ class _ScanBoxState extends State<ScanBox> {
               ),
             ),
           ),
-          Text(_data),
         ],
       ),
     );
