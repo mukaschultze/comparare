@@ -1,4 +1,4 @@
-package com.example.comparare_app
+package com.ps2.comparare
 
 import io.flutter.embedding.android.FlutterActivity
 
