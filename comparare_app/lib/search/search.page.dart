@@ -7,7 +7,19 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'product.list.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  var list;
+
+  SearchPage([var list]);
+  SearchPage.c1(var list) {
+    this.list = list;
+  }
+
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,8 +36,7 @@ class SearchPage extends StatelessWidget {
         title: Text('Comparare'),
         actions: [],
       ),
-      body: Body(
-      ),
+      body: Body(),
       drawer: SideDrawer(),
     );
   }
@@ -72,23 +83,29 @@ class Body extends StatelessWidget {
 }
 
 class ScanBox extends StatefulWidget {
+  var data;
+
+  // ScanBox(var list){
+  //   data = list;
+  // }
+
   @override
   _ScanBoxState createState() => _ScanBoxState();
 }
 
 class _ScanBoxState extends State<ScanBox> {
-
+  var code;
   Future<String> _scan() async {
     FlutterBarcodeScanner.scanBarcode(
             "#ff0000", "Digitar", true, ScanMode.BARCODE)
         .then(
       (value) => setState(
-        () => Navigator.push(
+        () async => await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => Query(value != "-1" ? value : ""),
           ),
-        ),
+        ).then((value) => {setState(() => code = value), print(value)}),
       ),
     );
   }
@@ -111,7 +128,7 @@ class _ScanBoxState extends State<ScanBox> {
             color: Colors.blue,
             textColor: Colors.white,
             child: Text(
-              "Escanear",
+              "Buscar",
               style: TextStyle(
                 fontSize: 16,
               ),

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var service = new PrecosService();
-    service.scanBarCode("798546846216").then((value) => print(value));
+    // service.scanBarCode("798546846216").then((value) => print(value));
 
     return MaterialApp(
       title: 'Comparare',

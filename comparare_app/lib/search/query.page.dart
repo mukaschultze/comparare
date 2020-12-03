@@ -1,11 +1,12 @@
+import 'package:comparare_app/services/precos.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Query extends StatefulWidget {
-  String _data;
-
-  Query(String data) {
-    this._data = data;
+  String _code;
+  var service = new PrecosService();
+  Query(String code) {
+    this._code = code;
   }
 
   @override
@@ -14,6 +15,7 @@ class Query extends StatefulWidget {
 
 class _QueryState extends State<Query> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool searching = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,21 +52,48 @@ class _QueryState extends State<Query> {
                 style: TextStyle(
                   fontSize: 20,
                 ),
-                controller: TextEditingController()..text = widget._data,
+                controller: TextEditingController()..text = widget._code,
               ),
             ),
             SizedBox(
               height: 12,
             ),
-            RaisedButton(
-              onPressed: () => {},
-              child: Text("Buscar"),
-              color: Colors.blue,
-              textColor: Colors.white,
-            )
+            Container(
+              child: searching?
+                  Wrap(
+                    direction: Axis.vertical,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 12,
+                      ),
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Text("Por favor, aguarde")
+                    ],
+                  )
+                  : RaisedButton(
+                      onPressed: () => {
+                        setState(() => searching = true),
+                        widget.service
+                            .scanBarCode("798546846216")
+                            .then((value) => {
+                                  setState(() => searching = false),
+                                  Navigator.pop(context, value),
+                                }),
+                      },
+                      child: Text("Buscar"),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                    ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
