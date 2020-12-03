@@ -1,7 +1,10 @@
+import * as firebase from "firebase-admin";
 import * as functions from "firebase-functions";
 import { productsCollection } from "./db";
 
 // functions.logger.info("Hello logs!", {structuredData: true});
+
+firebase.initializeApp();
 
 export const getProductFromBarcode = functions.https.onCall(
   async (data, context) => {
