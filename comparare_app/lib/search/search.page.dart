@@ -34,7 +34,15 @@ class _SearchPageState extends State<SearchPage> {
           onPressed: () {},
         ),
         title: Text('Comparare'),
-        actions: [],
+        actions: [
+          FlatButton(
+            child: Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Body(),
       drawer: SideDrawer(),
@@ -45,25 +53,7 @@ class _SearchPageState extends State<SearchPage> {
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   child: Wrap(
-    //     direction: Axis.vertical,
-    //     spacing: 6,
-    //     children: [
-    //       ScanBox(),
-    //       ProductList(),
-    //     ],
-    //   ),
-    // );
-    // return Column(
-    //     children: ListView(
-    //   scrollDirection: Axis.vertical,
-    //   children: [
-    //     ScanBox(),
-    //     ProductList(),
-    //   ],
-    // ));
-    return Container(
+      return Container(
       // color: Colors.white,
       width: MediaQuery.of(context).size.width,
       child: Wrap(
@@ -84,11 +74,6 @@ class Body extends StatelessWidget {
 
 class ScanBox extends StatefulWidget {
   var data;
-
-  // ScanBox(var list){
-  //   data = list;
-  // }
-
   @override
   _ScanBoxState createState() => _ScanBoxState();
 }
@@ -105,7 +90,7 @@ class _ScanBoxState extends State<ScanBox> {
           MaterialPageRoute(
             builder: (context) => Query(value != "-1" ? value : ""),
           ),
-        ).then((value) => {setState(() => code = value), print(value)}),
+        ).then((value) => {setState(() => widget.data = value), print(value)}),
       ),
     );
   }
