@@ -83,10 +83,15 @@ class _QueryState extends State<Query> {
                             .scanBarCode("798546846216")
                             .then((value) => {
                                   setState(() => searching = false),
-                                  Navigator.pop(context, value),
+                                  if (value != null)
+                                    {
+                                      Navigator.pop(context, value),
+                                    }
                                 })
-                            .catchError(
-                                (err) => setState(() => {searching = false, errr = "Ocorreu um erro interno."})),
+                            .catchError((err) => setState(() => {
+                                  searching = false,
+                                  errr = "Ocorreu um erro interno."
+                                })),
                       },
                       child: Text("Buscar"),
                       color: Colors.blue,

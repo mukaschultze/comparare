@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:comparare_app/models/productData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,11 +11,27 @@ import 'product.card.dart';
 import 'product.card.dart';
 
 class ProductList extends StatefulWidget {
+  ProductData data = new ProductData();
+
+  ProductList(ProductData data) {
+    this.data = data;
+  }
+
   @override
   _ProductListState createState() => _ProductListState();
 }
 
 class _ProductListState extends State<ProductList> {
+  Product convert(ProductData data, int index) {
+    return new Product(
+        barcode: data.barcode,
+        desc: data.desc,
+        id: data.id,
+        image: data.image,
+        name: data.nome,
+        preco: data.prices[index]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +47,7 @@ class _ProductListState extends State<ProductList> {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              child: false
+              child: widget.data.barcode == null
                   ? Column(
                       children: [
                         SizedBox(
@@ -59,53 +76,23 @@ class _ProductListState extends State<ProductList> {
                         ),
                       ],
                     )
-                  : Wrap(
-                      runSpacing: 6,
-                      children: [
-                        ProductCard(new Product(
-                          barcode: "7951621",
-                          id: "123",
-                          name: "Molho de Tomate",
-                          desc: new Desc(quant: "1", uint: "Unidade"),
-                          preco: new Preco(
-                              id: "123",
-                              isPromo: false,
-                              mercadoID: "ID - NOME MERCADO",
-                              preco: 1.20,
-                              productID: "123",
-                              upadate: "1607363921 "),
-                        )),
-                        ProductCard(new Product(
-                          barcode: "69875131",
-                          id: "123",
-                          name: "Carne Moida",
-                          desc: new Desc(quant: "1", uint: "Unidade"),
-                          preco: new Preco(
-                              id: "123",
-                              isPromo: false,
-                              mercadoID: "ID - NOME MERCADO",
-                              preco: 1.20,
-                              productID: "123",
-                              upadate: "1607363921 "),
-                        )),
-                        ProductCard(new Product(
-                          barcode: "12371837",
-                          id: "123",
-                          name: "Molho de Tomate",
-                          desc: new Desc(quant: "1", uint: "Unidade"),
-                          preco: new Preco(
-                              id: "123",
-                              isPromo: false,
-                              mercadoID: "ID - NOME MERCADO",
-                              preco: 1.20,
-                              productID: "123",
-                              upadate: "1607363921 "),
-                        )),
-                        // ProductCard(),
-                        // ProductCard(),
-                        // ProductCard(),
-                        // ProductCard(),
-                      ],
+                  : Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.all(6),
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: widget.data.prices.length,
+                        itemBuilder: (context, index) {
+                          final item = widget.data.prices[index];
+                          return Wrap(
+                            children: [
+                              ProductCard(convert(widget.data, index)),
+                              SizedBox(height: 6, width: 12),
+                            ],
+                          );
+                        },
+                      ),
                     ),
             ),
           ],

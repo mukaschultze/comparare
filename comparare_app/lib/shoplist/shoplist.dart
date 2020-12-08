@@ -39,37 +39,38 @@ class _ShopListState extends State<ShopList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          // leading: Icon(Icons.menu),
-          leading: FlatButton(
-            child: Icon(
-              Icons.arrow_left_outlined,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchPage()));
-            },
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        // leading: Icon(Icons.menu),
+        leading: FlatButton(
+          child: Icon(
+            Icons.arrow_left_outlined,
+            color: Colors.white,
           ),
-          title: Text('Lista de Compras'),
-          actions: [],
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => SearchPage()));
+          },
         ),
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.all(6),
-          child: ListView.builder(
-            itemCount: widget.shoplist.length,
-            itemBuilder: (context, index) {
-              final item = widget.shoplist[index];
-              return Wrap(
-                children: [
-                  ProductCard(item),
-                  SizedBox(height: 6, width: 12),
-                ],
-              );
-            },
-          ),
-        ));
+        title: Text('Lista de Compras'),
+        actions: [],
+      ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(6),
+        child: ListView.builder(
+          itemCount: widget.shoplist.length,
+          itemBuilder: (context, index) {
+            final item = widget.shoplist[index];
+            return Wrap(
+              children: [
+                ProductCard(item),
+                SizedBox(height: 6, width: 12),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 }

@@ -51,18 +51,18 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   add(Product product) {
-    print(product);
     setState(() {
       widget.shopList.add(product);
     });
-    save();
+    widget.shopList.length;
+    // save();
   }
 
   remove(Product product) {
     setState(() {
       widget.shopList.removeWhere((element) =>
           element.barcode == product.barcode &&
-          element.preco.mercadoID == product.preco.mercadoID);
+          element.preco.mercadoId == product.preco.mercadoId);
     });
     save();
   }
@@ -71,7 +71,7 @@ class _ProductCardState extends State<ProductCard> {
     return widget.shopList.firstWhere(
             (element) =>
                 element.barcode == product.barcode &&
-                element.preco.mercadoID == product.preco.mercadoID,
+                element.preco.mercadoId == product.preco.mercadoId,
             orElse: () => null) !=
         null;
   }
@@ -113,8 +113,9 @@ class _ProductCardState extends State<ProductCard> {
             height: 85,
             width: 85,
             child: Container(
+              padding: EdgeInsets.all(3),
+              child: Image.network(data.image),
               decoration: BoxDecoration(
-                color: Colors.red,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
@@ -124,76 +125,87 @@ class _ProductCardState extends State<ProductCard> {
               ),
             ),
           ),
-          Wrap(
-            spacing: 3,
-            direction: Axis.vertical,
-            children: [
-              SizedBox(
-                width: 1,
-                height: 1,
-              ),
-              Text(
-                // Mercado text
-                data.preco.mercadoID,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+          SizedBox(
+            width: MediaQuery.of(context).size.width - (85 + 40) - 60,
+            child: Wrap(
+              spacing: 3,
+              direction: Axis.vertical,
+              children: [
+                SizedBox(
+                  width: 1,
+                  height: 1,
                 ),
-              ),
-              Text(
-                data.name,
-                style: TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                formatCurrency.format(data.preco.preco),
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                // 'Atualizado: 26/11/2020 20:30',
-                formataHora(data.preco.upadate),
-                style: TextStyle(
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-          Container(
-            // alignment: Alignment.center,
-            // color: Colors.red,
-
-            child: isInShop(data)
-                ? Material(
-                    color: Colors.white,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.yellow,
-                      ),
-                      onPressed: () {
-                        remove(data);
-                        // isInShop(data);
-                      },
-                    ),
-                  )
-                : Material(
-                    color: Colors.white,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.grey,
-                      ),
-                      onPressed: () {
-                        add(data);
-                        // isInShop(data);
-                      },
+                Flexible(
+                  child: Text(
+                    // Mercado text
+                    data.preco.mercadoName,
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-          )
+                ),
+                Text(
+                  data.name,
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  formatCurrency.format(data.preco.price),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  'Atualizado: 26/11/2020 20:30',
+                  // formataHora(),
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 40,
+            child: Container(
+              // alignment: Alignment.center,
+              // color: Colors.red,
+
+              child: isInShop(data)
+                  ? Material(
+                      color: Colors.white,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.shopping_cart,
+                          color: Colors.yellow,
+                        ),
+                        onPressed: () {
+                          remove(data);
+                          // isInShop(data);
+                        },
+                      ),
+                    )
+                  : Material(
+                      color: Colors.white,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.shopping_cart,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          add(data);
+                          // isInShop(data);
+                        },
+                      ),
+                    ),
+            ),
+          ),
         ],
       ),
     );

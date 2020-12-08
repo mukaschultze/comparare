@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:comparare_app/models/core.dart';
+import 'package:comparare_app/models/productData.dart';
 import 'package:comparare_app/search/product.list.dart';
 import 'package:comparare_app/search/query.page.dart';
 import 'package:comparare_app/search/sideDrawer.dart';
@@ -9,12 +13,10 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'product.list.dart';
 
 class SearchPage extends StatefulWidget {
-  var list;
+  ProductData data = new ProductData();
 
-  SearchPage([var list]);
-  SearchPage.c1(var list) {
-    this.list = list;
-  }
+  // SearchPage([var list]);
+  // SearchPage.c1(var list) {}
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -42,7 +44,8 @@ class _SearchPageState extends State<SearchPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => ShopList()));
             },
           ),
         ],
@@ -56,7 +59,7 @@ class _SearchPageState extends State<SearchPage> {
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-      return Container(
+    return Container(
       // color: Colors.white,
       width: MediaQuery.of(context).size.width,
       child: Wrap(
@@ -68,7 +71,6 @@ class Body extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
           ),
           ScanBox(),
-          ProductList(),
         ],
       ),
     );
@@ -76,14 +78,14 @@ class Body extends StatelessWidget {
 }
 
 class ScanBox extends StatefulWidget {
-  var data;
+  ProductData data = new ProductData();
+
   @override
   _ScanBoxState createState() => _ScanBoxState();
 }
 
 class _ScanBoxState extends State<ScanBox> {
-  var code;
-  Future<String> _scan() async {
+  Future _scan() async {
     FlutterBarcodeScanner.scanBarcode(
             "#ff0000", "Digitar", true, ScanMode.BARCODE)
         .then(
@@ -93,7 +95,11 @@ class _ScanBoxState extends State<ScanBox> {
           MaterialPageRoute(
             builder: (context) => Query(value != "-1" ? value : ""),
           ),
-        ).then((value) => {setState(() => widget.data = value), print(value)}),
+        ).then((value) => {
+          setState(() => {
+            widget.data = ProductData.fromJson(value),
+          })
+        }),
       ),
     );
   }
@@ -122,6 +128,7 @@ class _ScanBoxState extends State<ScanBox> {
               ),
             ),
           ),
+          ProductList(widget.data),
         ],
       ),
     );
