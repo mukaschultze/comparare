@@ -68,28 +68,17 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   bool isInShop(Product product) {
-    // if(widget.shopList.length == 0) return false;
-    // print(widget.shopList.firstWhere((element) => element.barcode == product.barcode, orElse:() => null));
-    // return false;
     return widget.shopList.firstWhere(
             (element) =>
                 element.barcode == product.barcode &&
                 element.preco.mercadoID == product.preco.mercadoID,
             orElse: () => null) !=
         null;
-    // bool find = false;
-    // widget.shopList.map((e) => {
-    //   if(e.barcode == product.barcode && e.preco.mercadoID == product.preco.mercadoID){
-    //     find = true,
-    //     print("dsausdahusad")
-    //   }
-    // });
-    // return find;
   }
 
   _ProductCardState() {
     // save();
-    load().then((value) => print(widget.shopList.length));
+    load();
   }
 
   @override
