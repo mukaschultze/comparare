@@ -1,6 +1,7 @@
 import 'package:comparare_app/search/product.list.dart';
 import 'package:comparare_app/search/query.page.dart';
 import 'package:comparare_app/search/sideDrawer.dart';
+import 'package:comparare_app/shoplist/shoplist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -40,7 +41,9 @@ class _SearchPageState extends State<SearchPage> {
               Icons.shopping_cart,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList()));
+            },
           ),
         ],
       ),

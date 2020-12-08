@@ -10,50 +10,12 @@ import 'product.card.dart';
 import 'product.card.dart';
 
 class ProductList extends StatefulWidget {
-  var shopList = new List<Product>();
-
-  ProductList() {
-    shopList = [];
-  }
-
-  
-  // addToShopList(Product product){
-  //   setState(() {
-  //       widget.shopList = result;
-  //     });
-  //   _ProductListState teste = new _ProductListState();
-  //   teste.save();
-  // }
-
-
   @override
   _ProductListState createState() => _ProductListState();
 }
 
 class _ProductListState extends State<ProductList> {
   @override
-  Future load() async {
-    var prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString("data");
-
-    if (data != null) {
-      Iterable decode = jsonDecode(data);
-      List<Product> result = decode.map((e) => Product.fromJson(e)).toList();
-      setState(() {
-        widget.shopList = result;
-      });
-    }
-  }
-
-  Future save() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('data', jsonEncode(widget.shopList));
-  }
-
-  _ProductListState() {
-    load();
-  }
-
   Widget build(BuildContext context) {
     return Container(
         // color: Colors.white,
@@ -102,6 +64,32 @@ class _ProductListState extends State<ProductList> {
                       children: [
                         ProductCard(new Product(
                           barcode: "7951621",
+                          id: "123",
+                          name: "Molho de Tomate",
+                          desc: new Desc(quant: "1", uint: "Unidade"),
+                          preco: new Preco(
+                              id: "123",
+                              isPromo: false,
+                              mercadoID: "ID - NOME MERCADO",
+                              preco: 1.20,
+                              productID: "123",
+                              upadate: "1607363921 "),
+                        )),
+                        ProductCard(new Product(
+                          barcode: "69875131",
+                          id: "123",
+                          name: "Carne Moida",
+                          desc: new Desc(quant: "1", uint: "Unidade"),
+                          preco: new Preco(
+                              id: "123",
+                              isPromo: false,
+                              mercadoID: "ID - NOME MERCADO",
+                              preco: 1.20,
+                              productID: "123",
+                              upadate: "1607363921 "),
+                        )),
+                        ProductCard(new Product(
+                          barcode: "12371837",
                           id: "123",
                           name: "Molho de Tomate",
                           desc: new Desc(quant: "1", uint: "Unidade"),

@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:comparare_app/models/core.dart';
 import 'package:comparare_app/search/product.list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductCard extends StatefulWidget {
+  var shopList = new List<Product>();
+
   Product product;
 
   ProductCard(Product product) {
     this.product = product;
+    shopList = [];
   }
 
   @override
@@ -26,10 +32,69 @@ class _ProductCardState extends State<ProductCard> {
             .toLocal());
   }
 
+  Future load() async {
+    var prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("data");
+
+    if (data != null) {
+      Iterable decode = jsonDecode(data);
+      List<Product> result = decode.map((e) => Product.fromJson(e)).toList();
+      setState(() {
+        widget.shopList = result;
+      });
+    }
+  }
+
+  Future save() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('data', jsonEncode(widget.shopList));
+  }
+
+  add(Product product) {
+    print(product);
+    setState(() {
+      widget.shopList.add(product);
+    });
+    save();
+  }
+
+  remove(Product product) {
+    setState(() {
+      widget.shopList.removeWhere((element) =>
+          element.barcode == product.barcode &&
+          element.preco.mercadoID == product.preco.mercadoID);
+    });
+    save();
+  }
+
+  bool isInShop(Product product) {
+    // if(widget.shopList.length == 0) return false;
+    // print(widget.shopList.firstWhere((element) => element.barcode == product.barcode, orElse:() => null));
+    // return false;
+    return widget.shopList.firstWhere(
+            (element) =>
+                element.barcode == product.barcode &&
+                element.preco.mercadoID == product.preco.mercadoID,
+            orElse: () => null) !=
+        null;
+    // bool find = false;
+    // widget.shopList.map((e) => {
+    //   if(e.barcode == product.barcode && e.preco.mercadoID == product.preco.mercadoID){
+    //     find = true,
+    //     print("dsausdahusad")
+    //   }
+    // });
+    // return find;
+  }
+
+  _ProductCardState() {
+    // save();
+    load().then((value) => print(widget.shopList.length));
+  }
+
   @override
   Widget build(BuildContext context) {
     Product data = widget.product;
-
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -112,21 +177,33 @@ class _ProductCardState extends State<ProductCard> {
             // alignment: Alignment.center,
             // color: Colors.red,
 
-            child: Material(
-              color: Colors.white,
-
-              child: IconButton(
-
-                icon: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.grey,
-                ),
-                onPressed: () {
-                  _ProductListState list = new _ProductCardState();
-                  list.addToShopList(data);
-                },
-              ),
-            ),
+            child: isInShop(data)
+                ? Material(
+                    color: Colors.white,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.yellow,
+                      ),
+                      onPressed: () {
+                        remove(data);
+                        // isInShop(data);
+                      },
+                    ),
+                  )
+                : Material(
+                    color: Colors.white,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        add(data);
+                        // isInShop(data);
+                      },
+                    ),
+                  ),
           )
         ],
       ),

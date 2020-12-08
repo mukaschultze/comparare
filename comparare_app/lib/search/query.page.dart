@@ -16,6 +16,7 @@ class Query extends StatefulWidget {
 class _QueryState extends State<Query> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool searching = false;
+  String errr = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,22 +60,22 @@ class _QueryState extends State<Query> {
               height: 12,
             ),
             Container(
-              child: searching?
-                  Wrap(
-                    direction: Axis.vertical,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 12,
-                      ),
-                      CircularProgressIndicator(),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      Text("Por favor, aguarde")
-                    ],
-                  )
+              child: searching
+                  ? Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 12,
+                        ),
+                        CircularProgressIndicator(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text("Por favor, aguarde")
+                      ],
+                    )
                   : RaisedButton(
                       onPressed: () => {
                         setState(() => searching = true),
@@ -83,17 +84,19 @@ class _QueryState extends State<Query> {
                             .then((value) => {
                                   setState(() => searching = false),
                                   Navigator.pop(context, value),
-                                }),
+                                })
+                            .catchError(
+                                (err) => setState(() => {searching = false, errr = "Ocorreu um erro interno."})),
                       },
                       child: Text("Buscar"),
                       color: Colors.blue,
                       textColor: Colors.white,
                     ),
             ),
+            Text(errr),
           ],
         ),
       ),
     );
   }
 }
-
