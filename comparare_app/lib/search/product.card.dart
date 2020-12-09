@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comparare_app/models/core.dart';
 import 'package:comparare_app/search/product.list.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +29,7 @@ class _ProductCardState extends State<ProductCard> {
 
   String formataHora(String timestamp) {
     return new DateFormat("d/MM/y H:m:s").format(
-        new DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp) * 1000)
+        new DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp))
             .toLocal());
   }
 
@@ -54,8 +55,7 @@ class _ProductCardState extends State<ProductCard> {
     setState(() {
       widget.shopList.add(product);
     });
-    widget.shopList.length;
-    // save();
+    save();
   }
 
   remove(Product product) {
@@ -162,8 +162,8 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 ),
                 Text(
-                  'Atualizado: 26/11/2020 20:30',
-                  // formataHora(),
+                  // 'Atualizado: 26/11/2020 20:30',
+                  formataHora(data.preco.update),
                   style: TextStyle(
                     fontSize: 12,
                   ),

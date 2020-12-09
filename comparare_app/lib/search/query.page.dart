@@ -15,8 +15,13 @@ class Query extends StatefulWidget {
 
 class _QueryState extends State<Query> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var textControl = TextEditingController();
+
   bool searching = false;
   String errr = "";
+
+  _QueryState() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +58,7 @@ class _QueryState extends State<Query> {
                 style: TextStyle(
                   fontSize: 20,
                 ),
-                controller: TextEditingController()..text = widget._code,
+                controller: textControl..text = widget._code,
               ),
             ),
             SizedBox(
@@ -80,13 +85,15 @@ class _QueryState extends State<Query> {
                       onPressed: () => {
                         setState(() => searching = true),
                         widget.service
-                            .scanBarCode("798546846216")
+                            .scanBarCode(textControl.text) //798546846216
                             .then((value) => {
                                   setState(() => searching = false),
                                   if (value != null)
                                     {
                                       Navigator.pop(context, value),
-                                    }
+                                    },
+                                  setState(
+                                      () => errr = "Nenhum produto encontrado"),
                                 })
                             .catchError((err) => setState(() => {
                                   searching = false,

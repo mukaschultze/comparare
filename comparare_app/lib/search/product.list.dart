@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:comparare_app/models/productData.dart';
+import 'package:comparare_app/models/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,11 +24,17 @@ class _ProductListState extends State<ProductList> {
   Product convert(ProductData data, int index) {
     return new Product(
         barcode: data.barcode,
-        desc: data.desc,
+        descricao: new Descricao(quant: data.desc.quant, unit: data.desc.unit),
         id: data.id,
         image: data.image,
         name: data.nome,
-        preco: data.prices[index]);
+        preco: new Preco(
+          isPromo: data.prices[index].isPromo,
+          mercadoId: data.prices[index].mercadoId,
+          mercadoName: data.prices[index].mercadoName,
+          price: data.prices[index].price,
+          update: data.prices[index].update.millisecondsSinceEpoch.toString(),
+        ));
   }
 
   @override
