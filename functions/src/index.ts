@@ -18,22 +18,28 @@ export const getProductFromBarcode = functions.https.onCall(
     const productsQuery = productsCollection().where("barcode", "==", barcode);
     const productsSnapshot = await productsQuery.get();
     const products = productsSnapshot.docs.map((doc) => doc.data());
+    const productsIds = products.map((p) => p.id);
 
-    const precosQuery = precosCollection().where(
-      "produtoId",
-      "in",
-      products.map((p) => p.id)
-    );
-    const precosSnapshot = await precosQuery.get();
-    const precos = precosSnapshot.docs.map((doc) => doc.data());
+    const precosQuery =
+      productsIds.length > 0
+        ? precosCollection().where("produtoId", "in", productsIds)
+        : undefined;
+    const precosSnapshot = await precosQuery?.get();
+    const precos = precosSnapshot?.docs.map((doc) => doc.data()) || [];
 
-    const mercadosQuery = mercadosCollection().where(
-      firebase.firestore.FieldPath.documentId(),
-      "in",
-      precos.map((p) => p.mercadoId).map((id) => mercadosCollection().doc(id))
-    );
-    const mercadosSnapshot = await mercadosQuery.get();
-    const mercados = mercadosSnapshot.docs.map((doc) => doc.data());
+    const precosIds = precos
+      .map((p) => p.mercadoId)
+      .map((id) => mercadosCollection().doc(id));
+    const mercadosQuery =
+      precosIds.length > 0
+        ? mercadosCollection().where(
+            firebase.firestore.FieldPath.documentId(),
+            "in",
+            precosIds
+          )
+        : undefined;
+    const mercadosSnapshot = await mercadosQuery?.get();
+    const mercados = mercadosSnapshot?.docs.map((doc) => doc.data()) || [];
 
     return {
       precos: products.map(
