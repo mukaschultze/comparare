@@ -65,7 +65,7 @@ class Prices {
   double price;
   String mercadoName;
   String mercadoId;
-  Timestamp update;
+  int update;
 
   Prices(
       {this.isPromo,
@@ -79,7 +79,7 @@ class Prices {
     price = json['price'];
     mercadoName = json['mercadoName'];
     mercadoId = json['mercadoId'];
-    update = json['update'];
+    update =  json['update'] is Timestamp ?  json['update'].millisecondsSinceEpoch : json['update'];
   }
 
   Map<String, dynamic> toJson() {

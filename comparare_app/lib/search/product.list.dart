@@ -33,7 +33,7 @@ class _ProductListState extends State<ProductList> {
           mercadoId: data.prices[index].mercadoId,
           mercadoName: data.prices[index].mercadoName,
           price: data.prices[index].price,
-          update: data.prices[index].update.millisecondsSinceEpoch.toString(),
+          update: data.prices[index].update.toString(),
         ));
   }
 

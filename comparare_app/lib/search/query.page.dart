@@ -1,3 +1,4 @@
+import 'package:comparare_app/models/productData.dart';
 import 'package:comparare_app/services/precos.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +91,7 @@ class _QueryState extends State<Query> {
                                   setState(() => searching = false),
                                   if (value != null)
                                     {
-                                      Navigator.pop(context, value),
+                                      Navigator.pop<ProductData>(context, ProductData.fromJson(value)),
                                     },
                                   setState(
                                       () => errr = "Nenhum produto encontrado"),

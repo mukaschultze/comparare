@@ -9,12 +9,12 @@ import 'package:comparare_app/shoplist/shoplist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'product.list.dart';
 
 class SearchPage extends StatefulWidget {
   ProductData data = new ProductData();
-
   // SearchPage([var list]);
   // SearchPage.c1(var list) {}
 
@@ -85,23 +85,44 @@ class ScanBox extends StatefulWidget {
 }
 
 class _ScanBoxState extends State<ScanBox> {
+  Future load() async {
+    var prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("lastSearch");
+
+    if (data != null) {
+      setState(() {
+        widget.data = ProductData.fromJson(jsonDecode(data));
+      });
+    }
+  }
+
+  Future save() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('lastSearch', jsonEncode(widget.data));
+  }
+
   Future _scan() async {
     FlutterBarcodeScanner.scanBarcode(
             "#ff0000", "Digitar", true, ScanMode.BARCODE)
         .then(
       (value) => setState(
-        () async => await Navigator.push(
+        () async => await Navigator.push<ProductData>(
           context,
           MaterialPageRoute(
             builder: (context) => Query(value != "-1" ? value : ""),
           ),
         ).then((value) => {
-          setState(() => {
-            widget.data = ProductData.fromJson(value),
-          })
-        }),
+              setState(() => {
+                    widget.data = value,
+                    save(),
+                  })
+            }),
       ),
     );
+  }
+
+  _ScanBoxState() {
+    load();
   }
 
   @override

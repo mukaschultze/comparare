@@ -135,8 +135,7 @@ class _ProductCardState extends State<ProductCard> {
                   width: 1,
                   height: 1,
                 ),
-                Flexible(
-                  child: Text(
+                  Text(
                     // Mercado text
                     data.preco.mercadoName,
                     maxLines: 1,
@@ -146,7 +145,6 @@ class _ProductCardState extends State<ProductCard> {
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
-                  ),
                 ),
                 Text(
                   data.name,
