@@ -2,6 +2,7 @@ import 'package:comparare_app/search/search.page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'package:comparare_app/login/login.dart';
 import "services/precos.service.dart";
 
 void main() async {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SearchPage(),
+      home: LoginPage(),
     );
   }
 }
