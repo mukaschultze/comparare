@@ -45,7 +45,7 @@ class _BodyState extends State<Body> {
             title: Text("Comparare"),
           ),
           body: TabBarView(
-            children: [Login(), Text("CADASTRO")],
+            children: [Login(), SignUP()],
           ),
         ),
       ),
@@ -95,7 +95,7 @@ class Login extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
           ),
           SizedBox(
-            height: 6,
+            height: 12,
           ),
           RaisedButton(
             onPressed: () => {},
@@ -136,6 +136,90 @@ class Login extends StatelessWidget {
             },
             child: new Text(
               "Cadastre-se agora",
+              style: TextStyle(color: Colors.lightBlue),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SignUP extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(36),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 12,
+          ),
+          Text(
+            "Cadastrar-se",
+            style: TextStyle(
+              fontSize: 21,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          TextField(
+            decoration: InputDecoration(
+                labelText: "Nome",
+                hintText: "Ex: Maria",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.person),
+                )),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          TextField(
+            decoration: InputDecoration(
+                labelText: "Email",
+                hintText: "seu.email@gmail.com",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.email),
+                )),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          TextField(
+            decoration: InputDecoration(
+                labelText: "Senha",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.lock),
+                )),
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: true,
+          ),
+          SizedBox(
+            height:12,
+          ),
+          RaisedButton(
+            onPressed: () => {},
+            child: Text("Entrar"),
+            color: Colors.blue,
+            textColor: Colors.white,
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          Text(
+            "Já possui uma conta? ",
+          ),
+          GestureDetector(
+            onTap: () {
+              // Navigator.pushNamed(context, "myRoute");
+              DefaultTabController.of(context).animateTo(0);
+            },
+            child: new Text(
+              "Conecte-se agora",
               style: TextStyle(color: Colors.lightBlue),
             ),
           )
