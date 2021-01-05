@@ -29,13 +29,6 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         // leading: Icon(Icons.menu),
-        leading: FlatButton(
-          child: Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-          onPressed: () {},
-        ),
         title: Text('Comparare'),
         actions: [
           FlatButton(
