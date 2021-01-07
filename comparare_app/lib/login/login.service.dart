@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginService {
   static Future<UserCredential> signInWithGoogle() async {
+
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
