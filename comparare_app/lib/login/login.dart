@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
+import './login.service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -116,12 +117,16 @@ class Login extends StatelessWidget {
           SignInButton(
             Buttons.Google,
             text: "Google",
-            onPressed: () {},
+            onPressed: () {
+              LoginService.signInWithGoogle();
+            },
           ),
           SignInButton(
             Buttons.FacebookNew,
             text: "Facebook",
-            onPressed: () {},
+            onPressed: () {
+              LoginService.signInWithGoogle();
+            },
           ),
           SizedBox(
             height: 12,
@@ -199,7 +204,7 @@ class SignUP extends StatelessWidget {
             obscureText: true,
           ),
           SizedBox(
-            height:12,
+            height: 12,
           ),
           RaisedButton(
             onPressed: () => {},
