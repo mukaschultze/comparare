@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class CadProd extends StatelessWidget {
   @override

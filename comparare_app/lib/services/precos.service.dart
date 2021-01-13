@@ -23,6 +23,13 @@ class PrecosService {
         .map((data) => data.docs.map((e) => e.data()).toList());
   }
 
+  Stream<List<dynamic>> getAllMercados() {
+    return FirebaseFirestore.instance
+        .collection('mercados')
+        .snapshots()
+        .map((data) => data.docs.map((e) => e.data()).toList());
+  }
+
   Future<dynamic> scanBarCode(String code) {
     //   FirebaseFirestore.instance
     //       .collection('produtos')

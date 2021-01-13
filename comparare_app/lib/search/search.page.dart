@@ -80,13 +80,13 @@ class ScanBox extends StatefulWidget {
 class _ScanBoxState extends State<ScanBox> {
   Future load() async {
     var prefs = await SharedPreferences.getInstance();
+    // prefs.remove("lastSearch");
     var data = prefs.getString("lastSearch");
-
-    if (data != null) {
-      setState(() {
+    setState(() {
+      if (data != null) {
         widget.data = ProductData.fromJson(jsonDecode(data));
-      });
-    }
+      }
+    });
   }
 
   Future save() async {
@@ -106,8 +106,11 @@ class _ScanBoxState extends State<ScanBox> {
           ),
         ).then((value) => {
               setState(() => {
-                    widget.data = value,
-                    save(),
+                    if (value != null)
+                      {
+                        widget.data = value,
+                        save(),
+                      }
                   })
             }),
       ),

@@ -53,7 +53,6 @@ class _ShopListState extends State<ShopList> {
           },
         ),
         title: Text('Lista de Compras'),
-        actions: [],
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
