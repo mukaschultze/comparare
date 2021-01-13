@@ -1,3 +1,4 @@
+import 'package:comparare_app/cad_prod/cad_prod.dart';
 import 'package:comparare_app/login/login.dart';
 import 'package:comparare_app/search/search.page.dart';
 import 'package:flutter/material.dart';
@@ -51,8 +52,9 @@ class SideDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('Buscar Produtos'),
-            onTap: () { 
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchPage()));
             },
           ),
           ListTile(
@@ -62,28 +64,29 @@ class SideDrawer extends StatelessWidget {
               // ...
             },
           ),
-          if (logged)
+          if (true)
             ListTile(
               title: Text('Cadastrar um produto'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CadProd()));
               },
             ),
-          logged ? 
-          ListTile(
-            title: Text('Sair'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ) : 
-          ListTile(
-            title: Text('Fazer login'),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-          ),
+          logged
+              ? ListTile(
+                  title: Text('Sair'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                )
+              : ListTile(
+                  title: Text('Fazer login'),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                ),
         ],
       ),
     );

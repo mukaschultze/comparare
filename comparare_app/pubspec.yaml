@@ -41,6 +41,8 @@ dependencies:
 
   flutter_signin_button: ^1.1.0
 
+  flutter_masked_text: ^0.7.0
+
   # Add the dependency for the FlutterFire plugin for Google Analytics
   # firebase_analytics: ^5.0.2
 
