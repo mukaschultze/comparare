@@ -1,9 +1,17 @@
 import 'package:comparare_app/cad_prod/cad_prod.dart';
 import 'package:comparare_app/login/login.dart';
 import 'package:comparare_app/search/search.page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class SideDrawer extends StatelessWidget {
+class SideDrawer extends StatefulWidget {
+  @override
+  _SideDrawerState createState() => _SideDrawerState();
+}
+
+class _SideDrawerState extends State<SideDrawer> {
+  // FirebaseAuth firebaseAuth = new FirebaseAuth();
+
   @override
   Widget build(BuildContext context) {
     bool logged = false;
@@ -16,7 +24,7 @@ class SideDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            padding: EdgeInsets.only(top: 24, left: 12),
+            padding: EdgeInsets.only(top: 12, left: 12),
             child: Column(
               children: [
                 SizedBox(
@@ -43,7 +51,16 @@ class SideDrawer extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                   ),
-                )
+                ),
+                if (FirebaseAuth.instance.currentUser != null)
+                  Text(
+                    FirebaseAuth.instance.currentUser.displayName != null
+                        ? FirebaseAuth.instance.currentUser.displayName
+                        : FirebaseAuth.instance.currentUser.email,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  )
               ],
             ),
             decoration: BoxDecoration(
@@ -64,7 +81,7 @@ class SideDrawer extends StatelessWidget {
               // ...
             },
           ),
-          if (true)
+          if (FirebaseAuth.instance.currentUser != null)
             ListTile(
               title: Text('Cadastrar um produto'),
               onTap: () {
@@ -72,12 +89,13 @@ class SideDrawer extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => CadProd()));
               },
             ),
-          logged
+          FirebaseAuth.instance.currentUser != null
               ? ListTile(
                   title: Text('Sair'),
                   onTap: () {
-                    // Update the state of the app.
-                    // ...
+                    setState(() {
+                      FirebaseAuth.instance.signOut();
+                    });
                   },
                 )
               : ListTile(

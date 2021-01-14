@@ -1,3 +1,4 @@
+import 'package:comparare_app/search/search.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -62,6 +63,7 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   String email = "";
   String password = "";
+  String error = "";
 
   @override
   Widget build(BuildContext context) {
@@ -114,13 +116,22 @@ class LoginState extends State<Login> {
                       password = value;
                     });
                   },
+                ), SizedBox(
+                  height: 6,
+                ),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red),
                 ),
                 SizedBox(
                   height: 12,
                 ),
                 RaisedButton(
                   onPressed: () =>
-                      {LoginService.signInWithEmail(email, password)},
+                      LoginService.signInWithEmail(email, password)
+                      .then((value) => {Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()))})
+                      .catchError((onError) => {setState(() { error = onError.message;})}),
+
                   child: Text("Entrar"),
                   color: Colors.blue,
                   textColor: Colors.white,
@@ -139,8 +150,18 @@ class LoginState extends State<Login> {
                   Buttons.Google,
                   text: "Google",
                   onPressed: () {
-                    LoginService.signInWithGoogle();
-                  },
+                    LoginService.signInWithGoogle().then((vale) => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchPage()))
+                            })
+                        .catchError((onError) {
+                      setState(() {
+                        error = onError.message;
+                      });
+                        });
+                        },
                 ),
                 SizedBox(
                   height: 12,
@@ -251,12 +272,17 @@ class SignUpState extends State<SignUP> {
                 ),
                 RaisedButton(
                   onPressed: () => {
-                    LoginService.signUpWithEmail(email, password).then(
-                      (value) => print(value),
-                    ).catchError((onError) {
-                      setState((){
+                    LoginService.signUpWithEmail(email, password)
+                        .then((vale) => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchPage()))
+                            })
+                        .catchError((onError) {
+                      setState(() {
                         error = onError.message;
-                      }); 
+                      });
                     })
                   },
                   child: Text("Cadastrar"),
