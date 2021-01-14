@@ -54,7 +54,15 @@ class _BodyState extends State<Body> {
   }
 }
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  State<Login> createState() => LoginState();
+}
+
+class LoginState extends State<Login> {
+  String email = "";
+  String password = "";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,6 +90,11 @@ class Login extends StatelessWidget {
                   icon: Icon(Icons.email),
                 )),
             keyboardType: TextInputType.emailAddress,
+            onChanged: (value) {
+              setState(() {
+                email = value;
+              });
+            },
           ),
           SizedBox(
             height: 6,
@@ -94,12 +107,17 @@ class Login extends StatelessWidget {
                 )),
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            },
           ),
           SizedBox(
             height: 12,
           ),
           RaisedButton(
-            onPressed: () => {},
+            onPressed: () => {LoginService.signInWithEmail(email, password)},
             child: Text("Entrar"),
             color: Colors.blue,
             textColor: Colors.white,
@@ -117,13 +135,6 @@ class Login extends StatelessWidget {
           SignInButton(
             Buttons.Google,
             text: "Google",
-            onPressed: () {
-              LoginService.signInWithGoogle();
-            },
-          ),
-          SignInButton(
-            Buttons.FacebookNew,
-            text: "Facebook",
             onPressed: () {
               LoginService.signInWithGoogle();
             },
@@ -150,7 +161,15 @@ class Login extends StatelessWidget {
   }
 }
 
-class SignUP extends StatelessWidget {
+class SignUP extends StatefulWidget {
+  @override
+  State<SignUP> createState() => SignUpState();
+}
+
+class SignUpState extends State<SignUP> {
+  String email = "";
+  String password = "";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -190,6 +209,11 @@ class SignUP extends StatelessWidget {
                   icon: Icon(Icons.email),
                 )),
             keyboardType: TextInputType.emailAddress,
+            onChanged: (value) {
+              setState(() {
+                email = value;
+              });
+            },
           ),
           SizedBox(
             height: 6,
@@ -202,12 +226,17 @@ class SignUP extends StatelessWidget {
                 )),
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            },
           ),
           SizedBox(
             height: 12,
           ),
           RaisedButton(
-            onPressed: () => {},
+            onPressed: () => {LoginService.signUpWithEmail(email, password)},
             child: Text("Entrar"),
             color: Colors.blue,
             textColor: Colors.white,
