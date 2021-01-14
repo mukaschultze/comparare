@@ -15,9 +15,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var service = new PrecosService();
+    // var service = new PrecosService();
     // service.scanBarCode("798546846216").then((value) => print(value));
-    // print(service.getAllMercados());
+    // service.getMercados(
+    //     ["LAcPZeVZ1XSDcR6x7HRN", "TtGJy55c4zCCsZytPIIc"]).listen((value) {
+    //   print("-------------------------");
+    //   print(value);
+    //   print("-------------------------");
+    // });
 
     return MaterialApp(
       title: 'Comparare',

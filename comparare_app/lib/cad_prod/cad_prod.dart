@@ -1,3 +1,5 @@
+import 'package:comparare_app/models/mercado.model.dart';
+import 'package:comparare_app/services/precos.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -24,6 +26,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  List<Mercado> mercados = [];
+  var service = new PrecosService();
   var barcode = TextEditingController();
 
   String dropdownValue = 'Unidade';
@@ -37,8 +41,17 @@ class _BodyState extends State<Body> {
     FlutterBarcodeScanner.scanBarcode(
             "#ff0000", "Digitar", true, ScanMode.BARCODE)
         .then(
-      (value) => setState(() => {value == '-1' ? this.barcode.text = '' : this.barcode.text = value }),
+      (value) => setState(() =>
+          {value == '-1' ? this.barcode.text = '' : this.barcode.text = value}),
     );
+  }
+
+  _BodyState() {
+    service.getAllMercados().then((value) => {
+          // value.forEach((element) { mercados.add(new Mercado(nome: element.data()["nome"]));}),
+          value.forEach((element) {print(element.data()["id"]);}),
+          print(mercados),
+        });
   }
 
   @override

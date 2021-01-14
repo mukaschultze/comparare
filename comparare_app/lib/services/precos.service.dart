@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:comparare_app/models/mercado.model.dart';
 import 'package:comparare_app/models/productData.dart';
 
 class PrecosService {
@@ -23,12 +24,16 @@ class PrecosService {
         .map((data) => data.docs.map((e) => e.data()).toList());
   }
 
-  Stream<List<dynamic>> getAllMercados() {
+  Future<dynamic> getAllMercados() {
     return FirebaseFirestore.instance
         .collection('mercados')
-        .snapshots()
-        .map((data) => data.docs.map((e) => e.data()).toList());
+        .get()
+       .then((value) => value.docs)
+        .catchError((onError) => print(onError));
+        // .snapshots()
+        // .map((data) => data.docs.map((e) => e.data())));
   }
+
 
   Future<dynamic> scanBarCode(String code) {
     //   FirebaseFirestore.instance
