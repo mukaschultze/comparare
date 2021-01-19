@@ -29,6 +29,9 @@ class _BodyState extends State<Body> {
   List<Mercado> mercados = [];
   var service = new PrecosService();
   var barcode = TextEditingController();
+  List<String> nomes = [];
+  Mercado selectedMercado;
+  String currentText = "";
 
   String dropdownValue = 'Unidade';
   String _currentSelectedValue;
@@ -36,6 +39,11 @@ class _BodyState extends State<Body> {
 
   var mask = MoneyMaskedTextController(
       leftSymbol: "R\$ ", decimalSeparator: '.', thousandSeparator: ',');
+
+  GlobalKey<AutoCompleteTextFieldState<String>> keyAuto = new GlobalKey();
+
+  bool searchingProduct = false;
+  String searchingString = "Buscando produto...";
 
   Future _scan() async {
     FlutterBarcodeScanner.scanBarcode(
@@ -48,9 +56,13 @@ class _BodyState extends State<Body> {
 
   _BodyState() {
     service.getAllMercados().then((value) => {
-          // value.forEach((element) { mercados.add(new Mercado(nome: element.data()["nome"]));}),
-          value.forEach((element) {print(element.data()["id"]);}),
-          print(mercados),
+          value.forEach((element) {
+            mercados
+                .add(new Mercado(id: element.id, nome: element.data()["nome"]));
+          }),
+          mercados.forEach((e) {
+            nomes.add(e.nome);
+          }),
         });
   }
 
@@ -75,26 +87,64 @@ class _BodyState extends State<Body> {
               SizedBox(
                 height: 6,
               ),
-              TextField(
-                controller: barcode,
-                decoration: InputDecoration(
-                    labelText: "Código de barras",
-                    hintText: "154698479651",
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: () => {_scan()},
-                    )),
-                keyboardType: TextInputType.emailAddress,
+              Focus(
+                child: TextField(
+                  controller: barcode,
+                  decoration: InputDecoration(
+                      labelText: "Código de barras",
+                      hintText: "154698479651",
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.camera_alt),
+                        onPressed: () => {_scan()},
+                      )),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                onFocusChange: (hasFocus){
+                  if(!hasFocus && barcode.text != ""){
+                    setState(() {
+                      searchingProduct = true;
+                    });
+                      service.scanBarCode(barcode.text).then((value) => {
+                        if(value != null){
+                          setState((){
+                            searchingProduct = false;
+                          })
+                        }else{
+                          setState(() {
+                            searchingString = "Cadastre um novo produto";
+                          })
+                        }
+                      }).catchError((onError) => {
+                        searchingString = onError.message
+                      });
+                  }
+                },
               ),
               SizedBox(
                 height: 6,
               ),
-              TextField(
+              if(searchingProduct)
+              Text(searchingString),
+              SizedBox(
+                height: 6,
+              ),
+              SimpleAutoCompleteTextField(
+                key: keyAuto,
+                suggestions: nomes,
                 decoration: InputDecoration(
-                    labelText: "Mercado",
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.store),
-                    )),
+                  labelText: "Mercado",
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.store),
+                    onPressed: () {},
+                  ),
+                ),
+                textSubmitted: (text) {
+                  selectedMercado =
+                      mercados.firstWhere((element) => element.nome == text);
+                  print(selectedMercado.nome);
+                },
+                textChanged: (text) => currentText = text,
+                clearOnSubmit: false,
               ),
               TextField(
                 decoration: InputDecoration(
