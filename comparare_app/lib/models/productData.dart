@@ -76,7 +76,7 @@ class Prices {
 
   Prices.fromJson(Map<String, dynamic> json) {
     isPromo = json['isPromo'];
-    price = json['price'];
+    price = json['price'] is int ? json['price'].toDouble() : json['price'];
     mercadoName = json['mercadoName'];
     mercadoId = json['mercadoId'];
     update =  json['update'] is Timestamp ?  json['update'].millisecondsSinceEpoch : json['update'];
