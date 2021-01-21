@@ -266,22 +266,19 @@ class _BodyState extends State<Body> {
               ),
               RaisedButton(
                 onPressed: () async => {
-                  await cadastrarProduto()
-                      .then((value) => {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPage()))
-                          })
-                      .catchError((onError) => setState(() {
-                            error = onError.message;
-                          }))
+                  await cadastrarProduto().then((a) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
+                  })
                 },
                 child: Text("Salvar"),
                 color: Colors.blue,
                 textColor: Colors.white,
               ),
-              Text("Houve um erro: " + error, style: TextStyle(color: Colors.red),),
+              if(error != "")
+              Text(
+               "Houve um erro: " + error,
+                style: TextStyle(color: Colors.red),
+              ),
               SizedBox(
                 height: 12,
               ),

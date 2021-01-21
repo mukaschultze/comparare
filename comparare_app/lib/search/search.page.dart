@@ -5,6 +5,7 @@ import 'package:comparare_app/models/productData.dart';
 import 'package:comparare_app/search/product.list.dart';
 import 'package:comparare_app/search/query.page.dart';
 import 'package:comparare_app/search/sideDrawer.dart';
+import 'package:comparare_app/services/precos.service.dart';
 import 'package:comparare_app/shoplist/shoplist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,8 @@ class ScanBox extends StatefulWidget {
 }
 
 class _ScanBoxState extends State<ScanBox> {
+  PrecosService service = new PrecosService();
+  
   Future load() async {
     var prefs = await SharedPreferences.getInstance();
     // prefs.remove("lastSearch");
@@ -143,6 +146,24 @@ class _ScanBoxState extends State<ScanBox> {
               style: TextStyle(
                 fontSize: 16,
               ),
+            ),
+          ),
+          if(widget.data.barcode != null)
+          Container(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: Icon(
+                Icons.refresh,
+              ),
+              onPressed: () {
+                service.scanBarCode(widget.data.barcode).then((value) => {
+                  setState(() {
+                    widget.data = ProductData.fromJson(value);
+                    save();
+                  })
+                });
+                // isInShop(data);
+              },
             ),
           ),
           ProductList(widget.data),
