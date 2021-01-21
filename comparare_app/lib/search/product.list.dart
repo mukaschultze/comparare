@@ -27,7 +27,7 @@ class _ProductListState extends State<ProductList> {
         id: data.id,
         image: data.image != null
             ? data.image
-            : "https://www.beautycounter.com/images/placeholder.jpg",
+            : "https://cdn-cosmos.bluesoft.com.br/products/" + data.barcode,
         name: data.nome,
         preco: new Preco(
           isPromo: data.prices[index].isPromo,
