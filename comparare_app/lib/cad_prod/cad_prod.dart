@@ -2,6 +2,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comparare_app/models/mercado.model.dart';
 import 'package:comparare_app/models/productData.dart';
+import 'package:comparare_app/search/search.page.dart';
 import 'package:comparare_app/services/precos.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,8 @@ class _BodyState extends State<Body> {
   var price = TextEditingController();
   var unit = TextEditingController();
   var quant = TextEditingController();
+
+  String error = "";
 
   List<Mercado> mercados = [];
   var service = new PrecosService();
@@ -262,11 +265,23 @@ class _BodyState extends State<Body> {
                 height: 12,
               ),
               RaisedButton(
-                onPressed: () async => {await cadastrarProduto()},
+                onPressed: () async => {
+                  await cadastrarProduto()
+                      .then((value) => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchPage()))
+                          })
+                      .catchError((onError) => setState(() {
+                            error = onError.message;
+                          }))
+                },
                 child: Text("Salvar"),
                 color: Colors.blue,
                 textColor: Colors.white,
               ),
+              Text("Houve um erro: " + error, style: TextStyle(color: Colors.red),),
               SizedBox(
                 height: 12,
               ),
