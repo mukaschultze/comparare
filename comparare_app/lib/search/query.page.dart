@@ -91,15 +91,19 @@ class _QueryState extends State<Query> {
                                   setState(() => searching = false),
                                   if (value != null)
                                     {
-                                      Navigator.pop<ProductData>(context, ProductData.fromJson(value)),
+                                      Navigator.pop<ProductData>(
+                                          context, ProductData.fromJson(value)),
                                     },
                                   setState(
                                       () => errr = "Nenhum produto encontrado"),
                                 })
-                            .catchError((err) => setState(() => {
-                                  searching = false,
-                                  errr = "Ocorreu um erro interno."
-                                })),
+                            .catchError((err) {
+                          print(err);
+                          setState(() => {
+                                searching = false,
+                                errr = "Ocorreu um erro interno."
+                              });
+                        }),
                       },
                       child: Text("Buscar"),
                       color: Colors.blue,

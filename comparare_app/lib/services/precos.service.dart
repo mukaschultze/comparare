@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:comparare_app/models/mercado.model.dart';
-import 'package:comparare_app/models/productData.dart';
 
 class PrecosService {
   final HttpsCallable getProductFromBarcode =
@@ -28,26 +26,30 @@ class PrecosService {
     return FirebaseFirestore.instance
         .collection('mercados')
         .get()
-       .then((value) => value.docs)
+        .then((value) => value.docs)
         .catchError((onError) => print(onError));
-        // .snapshots()
-        // .map((data) => data.docs.map((e) => e.data())));
+    // .snapshots()
+    // .map((data) => data.docs.map((e) => e.data())));
   }
 
+  Future<dynamic> scanBarCode(String code) async {
+    try {
+      var prodDoc = FirebaseFirestore.instance.collection('produtos').doc(code);
+      var pricesCol = prodDoc.collection("prices");
 
-  Future<dynamic> scanBarCode(String code) {
-    //   FirebaseFirestore.instance
-    //       .collection('produtos')
-    //       .where("barcode", isEqualTo: code)
-    //       .snapshots()
-    //       .map((data) => data.docs.map((e) => e.data()));
-    return FirebaseFirestore.instance
-        .collection('produtos')
-        .where("barcode", isEqualTo: code)
-        .get()
-        .then((value) => value.docs.first.data())
-        .catchError((onError) => print(onError));
-        // .snapshots()
-        // .map((data) => data.docs.map((e) => e.data())));
+      var prodSnapshot = await prodDoc.get();
+
+      if (!prodSnapshot.exists) return null;
+
+      var prodValue = prodSnapshot.data();
+      var pricesValue = (await pricesCol.get()).docs.map((e) => e.data());
+
+      prodValue["prices"] = pricesValue;
+
+      return prodValue;
+    } catch (err) {
+      print(err);
+      throw err;
+    }
   }
 }

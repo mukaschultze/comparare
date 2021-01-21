@@ -1,12 +1,9 @@
-import 'package:comparare_app/models/productData.dart';
 import 'package:comparare_app/models/core.dart';
+import 'package:comparare_app/models/productData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/core.dart';
-
-import 'product.card.dart';
 import 'product.card.dart';
 
 class ProductList extends StatefulWidget {
@@ -24,9 +21,13 @@ class _ProductListState extends State<ProductList> {
   Product convert(ProductData data, int index) {
     return new Product(
         barcode: data.barcode,
-        descricao: new Descricao(quant: data.desc.quant, unit: data.desc.unit),
+        descricao: data.desc != null
+            ? new Descricao(quant: data.desc.quant, unit: data.desc.unit)
+            : new Descricao(quant: "1", unit: "Unidade"),
         id: data.id,
-        image: data.image,
+        image: data.image != null
+            ? data.image
+            : "https://www.beautycounter.com/images/placeholder.jpg",
         name: data.nome,
         preco: new Preco(
           isPromo: data.prices[index].isPromo,

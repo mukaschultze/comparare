@@ -1,3 +1,5 @@
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comparare_app/models/mercado.model.dart';
 import 'package:comparare_app/models/productData.dart';
 import 'package:comparare_app/services/precos.service.dart';
@@ -5,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class CadProd extends StatelessWidget {
   @override
@@ -51,6 +52,34 @@ class _BodyState extends State<Body> {
   bool searchingProduct = false;
   String searchingString = "Buscando produto...";
   ProductData product = new ProductData();
+
+  Future cadastrarProduto() async {
+    var obj = {
+      "barcode": barcode.text,
+      "nome": name.text,
+      "desc": {
+        "quant": quant.text,
+        "unit": dropdownValue,
+      }
+    };
+
+    var priceObj = {
+      "isPromo": false,
+      "mercadoId": selectedMercado == null ? null : selectedMercado.id,
+      "mercadoName":
+          selectedMercado == null ? currentText : selectedMercado.nome,
+      "price": mask.numberValue,
+      "update": FieldValue.serverTimestamp()
+    };
+
+    if (priceObj["price"] == null) return;
+
+    var doc =
+        FirebaseFirestore.instance.collection('produtos').doc(obj["barcode"]);
+
+    await doc.set(obj, new SetOptions(merge: true));
+    await doc.collection("prices").add(priceObj);
+  }
 
   Future _scan() async {
     FlutterBarcodeScanner.scanBarcode(
@@ -233,7 +262,7 @@ class _BodyState extends State<Body> {
                 height: 12,
               ),
               RaisedButton(
-                onPressed: () => {},
+                onPressed: () async => {await cadastrarProduto()},
                 child: Text("Salvar"),
                 color: Colors.blue,
                 textColor: Colors.white,
