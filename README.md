@@ -24,3 +24,8 @@ OR
 
 | [<img src="https://github.com/mukaschultze.png?size=115" width=115><br><sub>@mukaschultze</sub>](https://github.com/mukaschultze) | [<img src="https://github.com/gustavokessler.png?size=115" width=115><br><sub>@gustavokessler</sub>](https://github.com/gustavokessler) |
 | :-------------------------------------------------------------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------- |
+
+### Orientador
+
+| [<img src="https://github.com/celiotrois.png?size=115" width=115><br><sub>@celiotrois</sub>](https://github.com/celiotrois) |
+| --------------------------------------------------------------------------------------------------------------------------- |
